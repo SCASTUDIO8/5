@@ -146,19 +146,18 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     btn.disabled = true;
     btn.textContent = '提交中...';
 
-    const data = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        product: document.getElementById('product').value,
-        quantity: document.getElementById('quantity').value,
-        note: document.getElementById('note').value
-    };
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const product = document.getElementById('product').value;
+    const quantity = document.getElementById('quantity').value;
+    const note = document.getElementById('note').value;
 
-    const encoded = Object.keys(data)
-        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
-        .join('&');
-
-    const fullURL = API_URL + '?' + encoded;
+    const fullURL = API_URL
+        + '?name=' + encodeURIComponent(name)
+        + '&phone=' + encodeURIComponent(phone)
+        + '&product=' + encodeURIComponent(product)
+        + '&quantity=' + encodeURIComponent(quantity)
+        + '&note=' + encodeURIComponent(note);
 
     fetch(fullURL, {
         method: 'GET',
