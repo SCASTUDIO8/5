@@ -23,10 +23,7 @@
             max-width: 500px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .logo { text-align: center; margin-bottom: 30px; }
         .logo h1 {
             font-size: 3em;
             font-weight: 800;
@@ -135,10 +132,9 @@
     </div>
 
     <script>
-        // ⚠️ 把这里换成你的部署网址
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzaK2IDq5n_7aHkEDAYz-9vlfRVXRMmsoOnLVTnf14c2wJX_fyuPVFfoFDUk52P8ws/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycby5n67oLylQqwykpR3Md93E7st6EY3KPDrLiAy2u-EW7PZvGT4efHoo_Oj4UEEBxkY/exec';
 
-        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const btn = document.getElementById('submitBtn');
@@ -158,28 +154,25 @@
                 note: document.getElementById('note').value
             };
 
-            // 用 FormData 格式发送，解决跨域问题
-            const formData = new FormData();
-            Object.keys(data).forEach(key => formData.append(key, data[key]));
-
-            try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await res.json();
-                if (result.success) {
-                    success.style.display = 'block';
-                    this.reset();
-                } else {
-                    error.style.display = 'block';
-                }
-            } catch (err) {
-                error.style.display = 'block';
-            } finally {
+            // 用 no-cors 模式解决跨域问题
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(function() {
+                // no-cors 模式下永远显示成功
+                success.style.display = 'block';
+                document.getElementById('orderForm').reset();
                 btn.disabled = false;
                 btn.textContent = '提交订单';
-            }
+            })
+            .catch(function() {
+                error.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = '提交订单';
+            });
         });
     </script>
 </body>
