@@ -132,48 +132,47 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycby5n67oLylQqwykpR3Md93E7st6EY3KPDrLiAy2u-EW7PZvGT4efHoo_Oj4UEEBxkY/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycby5n67oLylQqwykpR3Md93E7st6EY3KPDrLiAy2u-EW7PZvGT4efHoo_Oj4UEEBxkY/exec';
 
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-            const btn = document.getElementById('submitBtn');
-            const success = document.getElementById('success');
-            const error = document.getElementById('error');
+    const btn = document.getElementById('submitBtn');
+    const success = document.getElementById('success');
+    const error = document.getElementById('error');
 
-            success.style.display = 'none';
-            error.style.display = 'none';
-            btn.disabled = true;
-            btn.textContent = '提交中...';
+    success.style.display = 'none';
+    error.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '提交中...';
 
-            const data = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                product: document.getElementById('product').value,
-                quantity: document.getElementById('quantity').value,
-                note: document.getElementById('note').value
-            };
+    const data = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        product: document.getElementById('product').value,
+        quantity: document.getElementById('quantity').value,
+        note: document.getElementById('note').value
+    };
 
-            // 用 no-cors 模式解决跨域问题
-            fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(function() {
-                // no-cors 模式下永远显示成功
-                success.style.display = 'block';
-                document.getElementById('orderForm').reset();
-                btn.disabled = false;
-                btn.textContent = '提交订单';
-            })
-            .catch(function() {
-                error.style.display = 'block';
-                btn.disabled = false;
-                btn.textContent = '提交订单';
-            });
-        });
-    </script>
-</body>
-</html>
+    const encoded = Object.keys(data)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+        .join('&');
+
+    fetch(API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encoded
+    })
+    .then(function() {
+        success.style.display = 'block';
+        document.getElementById('orderForm').reset();
+        btn.disabled = false;
+        btn.textContent = '提交订单';
+    })
+    .catch(function() {
+        error.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = '提交订单';
+    });
+});
