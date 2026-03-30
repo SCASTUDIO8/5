@@ -78,6 +78,7 @@
             color: #155724;
             border-radius: 10px;
             text-align: center;
+            font-size: 16px;
         }
         .error {
             display: none;
@@ -87,6 +88,7 @@
             color: #721c24;
             border-radius: 10px;
             text-align: center;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -118,9 +120,7 @@
                 <label>备注</label>
                 <textarea id="note" placeholder="其他要求（可不填）"></textarea>
             </div>
-            <button type="submit" class="submit-btn" id="submitBtn">
-                提交订单
-            </button>
+            <button type="submit" class="submit-btn" id="submitBtn">提交订单</button>
         </form>
 
         <div class="success" id="success">
@@ -132,46 +132,47 @@
     </div>
 
     <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycby5n67oLylQqwykpR3Md93E7st6EY3KPDrLiAy2u-EW7PZvGT4efHoo_Oj4UEEBxkY/exec';
+        var API_URL = 'https://script.google.com/macros/s/AKfycbzaK2IDq5n_7aHkEDAYz-9vlfRVXRMmsoOnLVTnf14c2wJX_fyuPVFfoFDUk52P8ws/exec';
 
-document.getElementById('orderForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    const btn = document.getElementById('submitBtn');
-    const success = document.getElementById('success');
-    const error = document.getElementById('error');
+            var btn = document.getElementById('submitBtn');
+            var success = document.getElementById('success');
+            var error = document.getElementById('error');
 
-    success.style.display = 'none';
-    error.style.display = 'none';
-    btn.disabled = true;
-    btn.textContent = '提交中...';
+            success.style.display = 'none';
+            error.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = '提交中...';
 
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const product = document.getElementById('product').value;
-    const quantity = document.getElementById('quantity').value;
-    const note = document.getElementById('note').value;
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var product = document.getElementById('product').value;
+            var quantity = document.getElementById('quantity').value;
+            var note = document.getElementById('note').value;
 
-    const fullURL = API_URL
-        + '?name=' + encodeURIComponent(name)
-        + '&phone=' + encodeURIComponent(phone)
-        + '&product=' + encodeURIComponent(product)
-        + '&quantity=' + encodeURIComponent(quantity)
-        + '&note=' + encodeURIComponent(note);
+            var fullURL = API_URL
+                + '?name=' + encodeURIComponent(name)
+                + '&phone=' + encodeURIComponent(phone)
+                + '&product=' + encodeURIComponent(product)
+                + '&quantity=' + encodeURIComponent(quantity)
+                + '&note=' + encodeURIComponent(note);
 
-    fetch(fullURL, {
-        method: 'GET',
-        mode: 'no-cors'
-    })
-    .then(function() {
-        success.style.display = 'block';
-        document.getElementById('orderForm').reset();
-        btn.disabled = false;
-        btn.textContent = '提交订单';
-    })
-    .catch(function() {
-        error.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = '提交订单';
-    });
-});
+            fetch(fullURL, {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(function() {
+                success.style.display = 'block';
+                document.getElementById('orderForm').reset();
+                btn.disabled = false;
+                btn.textContent = '提交订单';
+            }).catch(function() {
+                error.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = '提交订单';
+            });
+        });
+    </script>
+</body>
+</html>
